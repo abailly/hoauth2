@@ -85,7 +85,7 @@ doSimplePostRequest :: Manager                              -- ^ HTTP connection
                        -> IO (OAuth2Result BSL.ByteString)  -- ^ Response as ByteString
 doSimplePostRequest manager oa url body = liftM handleResponse go
                                   where go = do
-                                             req <- parseUrl $ BS.unpack url
+                                             req <- parseRequest $ BS.unpack url
                                              let addBasicAuth = applyBasicAuth (oauthClientId oa) (oauthClientSecret oa)
                                                  req' = (addBasicAuth . updateRequestHeaders Nothing) req
                                              httpLbs (urlEncodedBody body req') manager
@@ -108,7 +108,7 @@ authGetBS :: Manager                              -- ^ HTTP connection manager.
              -> URI                               -- ^ URL
              -> IO (OAuth2Result BSL.ByteString)  -- ^ Response as ByteString
 authGetBS manager token url = do
-  req <- parseUrl $ BS.unpack url
+  req <- parseRequest $ BS.unpack url
   authRequest req upReq manager
   where upReq = updateRequestHeaders (Just token) . setMethod HT.GET
 
@@ -118,7 +118,7 @@ authGetBS' :: Manager                              -- ^ HTTP connection manager.
              -> URI                               -- ^ URL
              -> IO (OAuth2Result BSL.ByteString)  -- ^ Response as ByteString
 authGetBS' manager token url = do
-  req <- parseUrl $ BS.unpack $ url `appendAccessToken` token
+  req <- parseRequest $ BS.unpack $ url `appendAccessToken` token
   authRequest req upReq manager
   where upReq = updateRequestHeaders Nothing . setMethod HT.GET
 
@@ -138,7 +138,7 @@ authPostBS :: Manager                             -- ^ HTTP connection manager.
              -> PostBody
              -> IO (OAuth2Result BSL.ByteString)  -- ^ Response as ByteString
 authPostBS manager token url pb = do
-  req <- parseUrl $ BS.unpack url
+  req <- parseRequest $ BS.unpack url
   authRequest req upReq manager
   where upBody = urlEncodedBody (pb ++ accessTokenToParam token)
         upHeaders = updateRequestHeaders (Just token) . setMethod HT.POST
