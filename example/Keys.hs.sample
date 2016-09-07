@@ -61,3 +61,11 @@ stackexchangeKey = OAuth2 { oauthClientId = "xx"
                           , oauthOAuthorizeEndpoint = "https://stackexchange.com/oauth"
                           , oauthAccessTokenEndpoint = "https://stackexchange.com/oauth/access_token"
                           }
+
+linkedInKey :: OAuth2
+linkedInKey = OAuth2 { oauthClientId = "xx"
+                     , oauthClientSecret = "xxxxxxxxxxxxxxx"
+                     , oauthCallback = Just "http://localhost:9988/oauth2/callback"
+                     , oauthOAuthorizeEndpoint = "https://www.linkedin.com/oauth/v2/authorization"
+                     , oauthAccessTokenEndpoint = "https://www.linkedin.com/oauth/v2/accessToken"
+                     }

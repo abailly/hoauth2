@@ -224,16 +224,40 @@ Executable test-stackexchange
   main-is:             StackExchange/test.hs
   hs-source-dirs:      example
   default-language:    Haskell2010
-  build-depends:       base              >= 4.5    && < 5,
-                       http-types        >= 0.9    && < 0.10,
-                       http-conduit      >= 2.2    && < 2.3,
-                       text              >= 0.11   && < 1.3,
-                       bytestring        >= 0.9    && < 0.11,
-                       aeson             >= 0.9    && < 0.12,
-                       hoauth2
+  build-depends:       base              
+                       ,http-types        
+                       ,http-conduit      
+                       ,text             
+                       ,bytestring       
+                       ,aeson         
+                       ,hoauth2
 
   if impl(ghc >= 6.12.0)
       ghc-options: -Wall -fwarn-tabs -funbox-strict-fields
                    -fno-warn-unused-do-bind
   else
       ghc-options: -Wall -fwarn-tabs -funbox-strict-fields
+
+Executable test-linkedin
+  if flag(test)
+    Buildable: True
+  else
+    Buildable: False
+
+  main-is:             LinkedIn/test.hs
+  hs-source-dirs:      example
+  default-language:    Haskell2010
+  build-depends:       base              
+                       ,http-types        
+                       ,http-conduit      
+                       ,text             
+                       ,bytestring       
+                       ,aeson         
+                       ,hoauth2
+
+  if impl(ghc >= 6.12.0)
+      ghc-options: -Wall -fwarn-tabs -funbox-strict-fields
+                   -fno-warn-unused-do-bind
+  else
+      ghc-options: -Wall -fwarn-tabs -funbox-strict-fields
+
