@@ -55,7 +55,7 @@ instance FromJSON LinkedInUser where
                            <$> o .: "id"
                            <*> o .: "firstName"
                            <*> o .: "lastName"
-    parseJSON _ = mzero
+    parseJSON e = fail $ "cannot decode LinkedInUser from JSON " <> show e
 
 sToBS :: String -> BS.ByteString
 sToBS = T.encodeUtf8 . T.pack
