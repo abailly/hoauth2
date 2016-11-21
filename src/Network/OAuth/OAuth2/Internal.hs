@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, RecordWildCards #-}
 
 {-# OPTIONS_HADDOCK -ignore-exports #-}
 
@@ -42,6 +42,7 @@ data AccessToken = AccessToken {
     , idToken      :: Maybe BS.ByteString
     } deriving (Show)
 
+
 -- | Parse JSON data into 'AccessToken'
 instance FromJSON AccessToken where
     parseJSON (Object o) = AccessToken <$> at <*> rt <*> ei <*> tt <*> id_ where
@@ -51,6 +52,15 @@ instance FromJSON AccessToken where
         tt = fmap (fmap encodeUtf8) $ o .:? "token_type"
         id_ = fmap (fmap encodeUtf8) $ o .:? "id_token"
     parseJSON _ = mzero
+
+instance ToJSON AccessToken where
+  toJSON AccessToken{..} = object [ "access_token"  .= decodeUtf8 accessToken
+                                  , "refresh_token" .= (decodeUtf8 <$> refreshToken)
+                                  , "expires_in"    .= expiresIn
+                                  , "token_type"    .= (decodeUtf8 <$> tokenType)
+                                  , "id_token"      .= (decodeUtf8 <$> tokenType)
+                                  ]
+
 
 --------------------------------------------------
 -- * Types Synonym
